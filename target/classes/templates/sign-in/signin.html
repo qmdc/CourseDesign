@@ -1,0 +1,85 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.88.1">
+    <title>用户登录</title>
+
+    <link rel="canonical" th:href="@{/examples/sign-in/signin.css}">
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+      #zhuce{
+          text-decoration: none;
+          color: rgba(156, 187, 243, 0.7);
+      }
+
+      #zhuce:hover{
+        color: #316cf4;
+      }
+    </style>
+
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/examples/sign-in/signin.css}" rel="stylesheet">
+  </head>
+  <body class="text-center">
+
+<main class="form-signin">
+  <form th:action="@{/loginto}" method="post">
+<!--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+    <h1 class="h3 mb-3 fw-normal">用户登录</h1>
+
+<!--      <div th:if="${param.error}">-->
+<!--          <div style="color: red">用户名或密码错误</div>-->
+<!--      </div>-->
+      <div>
+          <div style="color: green" th:text="${register}"></div>
+          <div style="color: red" th:text="${msg}"></div>
+      </div>
+
+
+    <div class="form-floating">
+      <input type="text" class="form-control" id="floatingInput" placeholder="name@example.com" name="username">
+      <label for="floatingInput" style="color: #565760" >请输入用户名</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+      <label for="floatingPassword" style="color: #565760" >请输入密码</label>
+    </div>
+
+    <div class="checkbox mb-3">
+      <label>
+        <a th:href="@{/openup}" id="zhuce">没有账户？</a>
+        <a th:href="@{/index}" id="index">回到首页</a>
+<!--        <input type="checkbox" value="remember"> 记住我-->
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">登录</button>
+<!--    <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>-->
+
+  </form>
+</main>
+
+
+
+  </body>
+</html>

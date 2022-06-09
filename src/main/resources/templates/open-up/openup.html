@@ -1,0 +1,215 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.88.1">
+  <title>用户注册</title>
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+
+  <style>
+    #center{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        height: 100vh;
+    }
+    #quxiao {
+        text-decoration: none;
+    }
+  </style>
+
+</head>
+<body>
+
+<div id = "center">
+<div>
+<form th:action="@{/openup/register}" method="post" onclick="return checkfinal()">
+    <div class="mb-3">
+        <h3 th:text="${register}" style="color: red"></h3>
+        <label for="username" class="form-label">用户名</label>
+        <input type="text" class="form-control" id="username" aria-describedby="emailHelp" name="username"
+               onkeyup="checkusrn()" placeholder="支持字母、数字、下划线、减号,且在4-10位之间">
+        <span id="checktext1"></span>
+<!--        <div id="emailHelp" class="form-text">请输入用户名</div>-->
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">密码</label>
+        <input type="password" class="form-control" id="password" name="password1" onkeyup="checkpwd()">
+        <span id="checktext2"></span>
+    </div>
+  <div class="mb-3">
+        <label for="password2" class="form-label">确认密码</label>
+<!--      onkeyup="validate()"-->
+        <input type="password" class="form-control" id="password2" name="password" onkeyup="checkpwdc()">
+        <span id="checktext3"></span>
+<!--        <span id="tishi"></span>-->
+    </div>
+    <div class="mb-3">
+        <label for="contactnumber" class="form-label">联系电话</label>
+        <input type="text" class="form-control" id="contactnumber" name="number" onkeyup="checknums()">
+        <span id="checktext4"></span>
+    </div>
+    <div class="mb-3">
+          <label for="address" class="form-label">收货地点</label>
+          <input type="text" class="form-control" id="address" name="address" onkeyup="checkaddress()"
+                 placeholder="如:西工大2号公寓楼A#222">
+        <span id="checktext5"></span>
+    </div>
+
+    <select class="form-select" aria-label="Default select example" name="word" id="word">
+        <option selected>请选则您的职业</option>
+        <option class="background" value="计算机/互联网/通信">计算机/互联网/通信</option>
+        <option class="background" value="生产/工艺/制造">生产/工艺/制造</option>
+        <option class="background" value="医疗/护理/制药">医疗/护理/制药</option>
+        <option class="background" value="金融/银行/投资/保险">金融/银行/投资/保险</option>
+        <option class="background" value="商业/服务业/个体营业">商业/服务业/个体营业</option>
+        <option class="background" value="文化/广告/传媒">文化/广告/传媒</option>
+        <option class="background" value="娱乐/艺术/表演">娱乐/艺术/表演</option>
+        <option class="background" value="律师/法务">律师/法务</option>
+        <option class="background" value="教育/培训">教育/培训</option>
+        <option class="background" value="公务员/行政/事业单位">公务员/行政/事业单位</option>
+        <option class="background" value="模特">模特</option>
+        <option class="background" value="空姐">空姐</option>
+        <option class="background" value="学生">学生</option>
+        <option class="background" value="其他职业">其他职业</option>
+    </select>
+
+    <select class="form-select" aria-label="Default select example" name="sex" id="sex">
+        <option selected>请选则您的性别</option>
+        <option class="background2" value="1">男</option>
+        <option class="background2" value="0">女</option>
+    </select>
+    <span id="checktext6"></span>
+
+    <div class="mb-3 form-check">
+<!--        <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+<!--        <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+      <div id="text1" class="form-text">我们默认给每位用户的初始金额为1000万元</div>
+      <div id="text2" class="form-text">确保您能畅行无阻(一段时间)</div>
+<!--      <div id="text2" class="form-text"></div>-->
+    </div>
+    <button type="submit" class="btn btn-outline-primary">确定</button>
+</form>
+    <button type="submit" class="btn btn-outline-warning"><a th:href="@{/index}" id="quxiao">取消</a></button>
+</div>
+</div>
+
+
+<script>
+    function checkusrn() {
+        let check = false;
+        const username = document.getElementById("username").value;
+        let uPattern = /^[a-zA-Z0-9_-]{4,10}$/;
+        if (!uPattern.test(username)) {
+            document.getElementById("checktext1").innerHTML = "<span style='color:red'>支持字母、数字、下划线、减号,且4-10位</span>";
+            check = false;
+        } else {
+            document.getElementById("checktext1").innerHTML = "<span style='color:green'>这应该是一个很不错的用户名</span>";
+            check = true;
+        }
+        return check;
+    }
+
+    function checkpwd() {
+        let check = false;
+        let password = document.getElementById("password").value;
+        let pPattern = /^.*(?=.{6,16})(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
+        if (!pPattern.test(password)||password.length > 16) {
+            document.getElementById("checktext2").innerHTML = "<span style='color:red'>需包含大小字母、数字,且6-16位</span>";
+            check = false;
+        }else {
+            document.getElementById("checktext2").innerHTML = "<span style='color:green'>很好的密码</span>";
+            check = true;
+        }
+        return check;
+    }
+    function checkpwdc() {
+        let check = false;
+        let password = document.getElementById("password").value;
+        let password2 = document.getElementById("password2").value;
+        if (password !== password2) {
+            document.getElementById("checktext3").innerHTML = "<span style='color:red'>两次输入密码不一致</span>";
+            check = false;
+        } else {
+            document.getElementById("checktext3").innerHTML = "<span style='color:green'>密码一致</span>";
+            check = true;
+        }
+        return check;
+    }
+    function checknums() {
+        let check = false;
+        let contactnumber = document.getElementById("contactnumber").value;
+        const strRegex = /^(13|14|15|17|18|19)\d{9}$/;
+        if(!strRegex.test(contactnumber)) {
+            document.getElementById("checktext4").innerHTML = "<span style='color:red'>请输入正确的电话号码</span>";
+            check = false;
+        } else {
+            document.getElementById("checktext4").innerHTML = "<span style='color:green'>填写正确</span>";
+            check = true;
+        }
+        return check;
+    }
+    function checkaddress() {
+        let check = false;
+        let password = document.getElementById("address").value;
+        let cnPattern = /[\u4E00-\u9FA5]/;
+        if (password.length < 10||!cnPattern.test(password)||password.length > 50) {
+            document.getElementById("checktext5").innerHTML = "<span style='color:red'>请填写合理的收货地址</span>";
+            check = false;
+        } else {
+            document.getElementById("checktext5").innerHTML = "<span style='color:green'>您应该能收到货</span>";
+            check = true;
+        }
+        return check;
+    }
+    // function checkcb() {
+    //     var check = false
+    //
+    //     if (!document.getElementsByName("checkbox")[0].checked) {
+    //         document.getElementById("checktext4").innerHTML = "  × 请同意我们的条款才可以继续申请";
+    //         check = false;
+    //     } else {
+    //         document.getElementById("checktext4").innerHTML = "";
+    //         check = true;
+    //
+    //     }
+    //     return check;
+    //
+    // }
+    function checkfinal() {
+        let check1 = false;
+        // let select = document.getElementById("word");
+        let options = document.getElementsByClassName("background");
+        for(let i=0;i<options.length;i++){
+            if(options[i].selected){
+                check1 = true;
+            }
+        }
+
+        let check2 = false;
+        // let select2 = document.getElementById("sex");
+        let options2 = document.getElementsByClassName("background2");
+        for(let i=0;i<options2.length;i++){
+            if(options2[i].selected){
+                check2 = true;
+            }
+        }
+        if (check1===false||check2===false) {
+            document.getElementById("checktext6").innerHTML = "<span style='color:red'>请完成选框</span>";
+            // alert("!")
+            // console.log("请完成选框")
+        }
+
+        return checkusrn() && checkpwd() && checkpwdc() && checknums() && checkaddress()
+            && check1 && check2;
+    }
+
+</script>
+
+</body>
+</html>

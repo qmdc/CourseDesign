@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
+
+
+</head>
+<body>
+
+<div th:replace="common :: #upmenu"></div>
+
+<div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">商品名</th>
+            <th scope="col">商品编号</th>
+            <th scope="col">价格</th>
+            <th scope="col">购买数量</th>
+            <th scope="col">购买时间</th>
+            <th scope="col">商品图片</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="record:${recordlist}">
+            <td th:text="${#strings.abbreviate(record.itemDes,28)}"></td>
+            <td th:text="${record.itemId}"></td>
+            <td th:text="'¥ '+${record.itemprice}"></td>
+            <td th:text="${record.recordNums}"></td>
+            <td th:text="${record.recordTime}"></td>
+<!--            <td>哈哈</td>-->
+            <td><img th:src="${record.itemImg}" width="23px" height="20.5px"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>

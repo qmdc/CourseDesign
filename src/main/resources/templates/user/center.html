@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-个人信息</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
+
+    <style>
+        /*#center{*/
+        /*    display: flex;*/
+        /*    justify-content:center;*/
+        /*    !*align-items:center;*!*/
+        /*    height: 100vh;*/
+        /*}*/
+    </style>
+</head>
+<body>
+
+<div th:replace="common :: #upmenu"></div>
+
+<div id="d">
+    <div class="card">
+        <div class="card-body">
+            <h4 th:text="${session.loginsuccess.userName}+' 您好!'" style="color: #1d71e1"></h4>
+<!--            <p class="card-text">当前余额:xxx</p>-->
+        </div>
+    </div>
+</div>
+
+<div id="center">
+    <!--卡片组-->
+    <div id="a">
+        <div id="b">
+            <div class="card">
+                <div class="card-header"> 货币信息</div>
+                <div class="card-body">当前余额 :  [[*{session.loginsuccess.userMoney}]] ¥</div>
+                <div class="card-body">当前积分 :  [[*{session.loginsuccess.userBranch}]]</div>
+                <div class="card-body">订单总数 :  [[*{session.loginsuccess.userCount}]]</div>
+                <div class="card-body">会员等级 :  [[*{session.loginsuccess.userGrade}]] 级</div>
+                <div class="card-body">消费总额 :  [[*{session.loginsuccess.userSpend}]] ¥</div>
+            </div>
+        </div>
+
+        <div id="c">
+            <div class="card">
+                <div class="card-header"> 个人信息</div>
+                <div class="card-body">
+                    <div th:switch="${session.loginsuccess.userSex}">
+                        <span th:case="0">性别 :  女</span>
+                        <span th:case="1">性别 :  男</span>
+                    </div>
+                </div>
+                <div class="card-body">年龄 :  [[*{session.loginsuccess.userAge}]]</div>
+                <div class="card-body">工作职业 :  [[*{session.loginsuccess.userWork}]]</div>
+                <div class="card-body">收货地址 :  [[*{session.loginsuccess.userAddress}]]</div>
+                <div class="card-body">联系电话 :  [[*{session.loginsuccess.userPhone}]]</div>
+                <div class="card-footer" style="color: #572647">I like you with money!</div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+</body>
+</html>
