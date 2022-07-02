@@ -1,3 +1,4 @@
+[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=konan1024)](https://github.com/anuraghazra/github-readme-stats)
 ## 数据库课程设计～2022年6月
 
 ### 一、所用技术栈
