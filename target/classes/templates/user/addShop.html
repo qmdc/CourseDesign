@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-个人信息</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
+
+    <style>
+        /*#center{*/
+        /*    display: flex;*/
+        /*    justify-content:center;*/
+        /*    !*align-items:center;*!*/
+        /*    height: 100vh;*/
+        /*}*/
+        p{
+            text-align: center;
+            font-size: 30px;
+            font-family: "Apple SD Gothic Neo"
+        }
+        #input1{
+            text-align: center;
+        }
+        #addshop{
+            width: 500px;
+            height: 36px;
+            display: inline-block;
+            border: 1.5px solid #687179;
+            border-radius: 5px;
+
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div th:replace="common :: #upmenu"></div>
+
+<p>购买商品</p>
+<div id="input1">
+    <input id="addshop" class="form-control-plaintext" type="text" placeholder=" 请输入商品关键词" required>
+    <button th:onclick="addShop()" class="btn btn-secondary">点击购买</button>
+</div>
+
+<div class="container mt-3">
+    <div>
+        <h2>搜索🔍到的商品～～</h2>
+    </div>
+    <p>请选择上架商品</p>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">商品描述</th>
+            <th scope="col">商品价格</th>
+            <th scope="col">商品图片</th>
+            <th scope="col">选择上架</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item:${newItems}">
+            <td th:text="${#strings.abbreviate(item.itemDes,20)+'...'+#strings.substring(item.itemDes,item.itemDes.length-11,item.itemDes.length)}"
+                data-bs-toggle="tooltip" data-bs-placement="bottom" th:title="${item.itemDes}"></td>
+            <td th:text="'¥ '+${item.itemprice}"></td>
+            <td><img th:src="${item.itemImg}" width="23px" height="20.5px"></td>
+            <td>
+                <div>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" th:data-bs-target="'#staticBackdrop'+${item.itemId}">
+                        上架
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="'staticBackdrop'+${item.itemId}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                         aria-labelledby="staticBackdropLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="staticBackdropLabel">确定上架</h4>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div><strong>商品描述：</strong></div><div th:text="${item.itemDes}"></div><hr>
+                                    <div><strong>商品价格：</strong></div><div th:text="'¥ '+${item.itemprice}"></div><hr>
+                                    <div><strong>商品图片：</strong></div><div><img th:src="${item.itemImg}" width="230px" height="205px"></div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary"
+                                            th:onclick="addShopOne([[${item.itemDes}]],[[${item.itemprice}]],[[${item.itemImg}]])"
+                                    >上架</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </td>
+
+
+
+        </tr>
+        </tbody>
+    </table>
+    <h2 style="color: red" th:text="${ifNull}"></h2>
+
+</div>
+
+<script type="text/javascript" language="javascript" th:src="@{/js/jquery.min.js}"></script>
+<script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+    function addShop(){
+        let keyword = document.getElementById("addshop").value;
+        if(keyword===null){
+            return;
+        }
+        location.href='/shop/parse/ABC/'+encodeURI(encodeURI(keyword))
+    }
+
+    function addShopOne(a,b,c) {
+        console.log(a,b,c)
+        $.ajax({
+            url:"http://localhost:9090/shop/addShopOne",
+            data:{
+                "itemDes":a,
+                "itemprice":b,
+                "itemImg":c
+            },
+            type:"post",
+            dataType:"text",
+            success:function (konan){
+                if(konan==='ok'){
+                    alert("上架成功～")
+                }else {
+                    alert("上架失败～")
+                }
+            }
+        });
+    }
+
+    // if (confirm("您确定要删除吗?")) {
+    //     $.ajax({
+    //         url:"https://www.konan.vip/table/backgrounduser/deleteroot",
+    //         data:{
+    //             "id":id,
+    //             "page":page
+    //         },
+    //         type:"post",
+    //         dataType:"text",
+    //         success:function (konan){
+    //             alert(konan);
+    //             window.location.reload();
+    //         }
+    //     });
+    // }
+</script>
+
+</body>
+</html>

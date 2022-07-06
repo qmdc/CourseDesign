@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>购物记录</title>
     <!-- Bootstrap core CSS -->
     <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
     <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
@@ -14,22 +14,27 @@
 <div th:replace="common :: #upmenu"></div>
 
 <div>
-    <table class="table">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th scope="col">商品名</th>
             <th scope="col">商品编号</th>
-            <th scope="col">价格</th>
-            <th scope="col">购买数量</th>
+            <th scope="col">商品价格</th>
+            <th scope="col">成交额</th>
+            <th scope="col">使用积分</th>
+            <th scope="col">数量</th>
             <th scope="col">购买时间</th>
             <th scope="col">商品图片</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="record:${recordlist}">
-            <td th:text="${#strings.abbreviate(record.itemDes,28)}"></td>
+            <td th:text="${#strings.abbreviate(record.itemDes,10)+'...'+#strings.substring(record.itemDes,record.itemDes.length-8,record.itemDes.length)}"
+                data-bs-toggle="popover" data-bs-trigger="hover" th:data-bs-content="${record.itemDes}"></td>
             <td th:text="${record.itemId}"></td>
             <td th:text="'¥ '+${record.itemprice}"></td>
+            <td th:text="'¥ '+${record.recordMoney}"></td>
+            <td th:text="${record.useBranch}"></td>
             <td th:text="${record.recordNums}"></td>
             <td th:text="${record.recordTime}"></td>
 <!--            <td>哈哈</td>-->
@@ -39,6 +44,12 @@
     </table>
 </div>
 
+<script>
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>
 
 </body>
 </html>

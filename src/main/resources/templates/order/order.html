@@ -28,6 +28,9 @@
             <div class="card" style="width:400px">
                 <img class="card-img-top" th:src="${item.itemImg}" alt="Card image" style="width:100%">
                 <div class="card-body">
+                    <ul>
+                        <li id="price" th:value="${item.itemprice}" hidden>[[${item.itemprice}]]</li>
+                    </ul>
                     <h4 class="card-title" th:text="'¥'+${item.itemprice}" style="color: red"></h4>
                     <p class="card-text" th:text="${item.itemDes}"></p>
                     <div class="btn btn-outline-success"
@@ -48,12 +51,6 @@
                     </div>
                 </div>
             </div>
-<!--            <div class="card">-->
-<!--                <div class="card-body">目前您的余额为: [[${session.loginsuccess.userMoney}]] 元</div>-->
-<!--            </div>-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">目前您的积分为: [[${session.loginsuccess.userBranch}]] 分</div>-->
-<!--            </div>-->
         </div>
     </div>
 </div>
@@ -76,6 +73,8 @@
         let bool = checkup();
         if (bool) {
             top.location.href=`/shop/shopping/${itemId}/${integral}`;
+            alert("购买成功");
+            top.location.href=`/shop/recording`
         }else {
             return false;
         }
@@ -87,11 +86,15 @@
 
         let integrals = document.getElementById("integral").value;
         let userBranch = document.getElementById("userBranch").value;
+        let itemprice = document.getElementById("price").value;
 
         let integral = document.getElementById("integral").value;
         let cnPattern = /^([1-9]\d*|[0])$/;
         if (!cnPattern.test(integral)||integrals>userBranch) {
             document.getElementById("checktext").innerHTML = "<span style='color:red'>请填写合理的积分</span>";
+            check = false;
+        } else if(integrals*0.8>0.5*itemprice){
+            document.getElementById("checktext").innerHTML = "<span style='color:red'>抵消金额不能超过商品价格的一半</span>";
             check = false;
         } else {
             document.getElementById("checktext").innerHTML = "<span style='color:green'>积分将会抵消部分金额</span>";

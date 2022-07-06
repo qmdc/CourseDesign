@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author konan
@@ -67,6 +67,10 @@ public class Record implements Serializable {
     @ApiModelProperty(value = "商品图片")
     @TableField("itemImg")
     private String itemImg;
+
+    @ApiModelProperty(value = "使用积分数量")
+    @TableField("useBranch")
+    private Integer useBranch;
 
     @TableLogic
     private Integer deleted;

@@ -32,6 +32,10 @@ public class ShiroConfig {
         filterMap.put("/shop/order","perms[user:root|user:primary]");   //提交订单
         filterMap.put("/shop/record","perms[user:root|user:primary]");   //购物记录
         filterMap.put("/shop/recording","perms[user:root|user:primary]");   //购物记录-视图跳转
+        filterMap.put("/shop/info","perms[user:root]");
+        filterMap.put("/shop/userinfo","perms[user:root]");
+        filterMap.put("/shop/addShop","perms[user:root]");
+        filterMap.put("/shop/parse/**","perms[user:root]");
 
         filterMap.put("/shop/**","authc");
 

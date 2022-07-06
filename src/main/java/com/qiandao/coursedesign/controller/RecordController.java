@@ -46,23 +46,20 @@ public class RecordController {
 
     @ApiOperation("用户点击购买商品")
     @GetMapping("/shop/shopping/{itemId}/{integral}")
-    @Transactional  //开启事物，异常回滚
+    @Transactional(rollbackFor = Exception.class)  //开启事物，异常回滚
     public String shopping(@PathVariable("itemId") String itemId,@PathVariable("integral") int integral) {
 
-//        System.out.println("购买的商品id是："+itemId+"使用的积分是"+integral);
+        System.out.println("购买的商品id是：{},使用的积分数量：{}"+itemId+"---"+integral);
+        log.info("购买的商品id是：{},使用的积分数量：{}",itemId,integral);
         Item item = itemService.getById(Long.valueOf(itemId));
-//        System.out.println("购买的商品是："+item);
 
-        if (item.getItemNums()<=0) { //如果商品卖完了
-            return "item/item-null.html";
-        }
+        //如果商品卖完了
+        if (item.getItemNums()<=0) {return "item/item-null.html";}
 
         int integral1 = IntegralVip.integral(item.getItemprice().toString());   //增加的积分
 
         BigDecimal money = BigDecimal.valueOf(0);      //折扣的金钱
-        if (integral!=0) {
-            money = IntegralVip.money(integral);
-        }
+        if (integral!=0) {money = IntegralVip.money(integral);}
 
         boolean flag = false;
         User loginsuccess = (User) SecurityUtils.getSubject().getSession().getAttribute("loginsuccess");
@@ -75,7 +72,8 @@ public class RecordController {
             Record record = new Record();
             record.setItemId(Long.valueOf(itemId));
             record.setUserId(loginsuccess.getUserId());
-            record.setRecordMoney(item.getItemprice());
+            record.setRecordMoney(item.getItemprice().subtract(money));
+            record.setUseBranch(integral);
             record.setRecordTime(SimpleDate.nowtime());
             record.setItemDes(item.getItemDes());
             record.setItemprice(item.getItemprice());
@@ -92,6 +90,7 @@ public class RecordController {
             updateWrapper1.eq("userId",loginsuccess.getUserId());
             updateWrapper1.setSql("userCount = userCount + 1");
 
+            //先算折扣再算积分抵消的金额
             updateWrapper1.setSql("userMoney = UserMoney -"+item.getItemprice().multiply(BigDecimal.valueOf(discount))+"+"+money);
             updateWrapper1.setSql("userSpend = userSpend +"+item.getItemprice().multiply(BigDecimal.valueOf(discount))+"-"+money);
             updateWrapper1.setSql("userBranch = userBranch -"+integral+"+"+integral1);

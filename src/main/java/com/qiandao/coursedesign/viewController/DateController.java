@@ -12,16 +12,21 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 @Api("数据获取")
 @Slf4j
-@RestController
+@Controller
 public class DateController {
 
     @Autowired
@@ -32,6 +37,7 @@ public class DateController {
 
     @ApiOperation("批量爬取京东商城数据")
     @RequestMapping("/parses")
+    @ResponseBody
     public String parses() {
 
         long start = System.currentTimeMillis();
@@ -91,24 +97,29 @@ public class DateController {
     }
 
     @ApiOperation("爬取京东商城数据")
-    @RequestMapping("/parse/{type}/{keyword}")
-    public String parse(@PathVariable("keyword") String keyword,@PathVariable("type") String type) {
+    @RequestMapping("/shop/parse/{type}/{keyword}")
+    public String parse(@PathVariable("keyword") String keyword, @PathVariable("type") String type, Model model) {
 
+        String decode = URLDecoder.decode(keyword, StandardCharsets.UTF_8);
         List<Item> items = null;
         try {
-            log.info("解析数据关键词:"+keyword+" 类型："+type);
-            items = HtmlParseUtil.parseJD(keyword,type);
+            log.info("解析数据关键词:"+decode+" 类型："+type);
+            items = HtmlParseUtil.parseJD(decode,type);
 
             try {
-                itemService.saveBatch(items);
+//                itemService.saveBatch(items);
+                model.addAttribute("newItems",items);
             } catch (Exception e) {
-                log.info("数据添加至数据库异常:"+"关键词:"+keyword+" 类型："+type);
+                log.info("数据添加至数据库异常:"+"关键词:"+decode+" 类型："+type);
             }
-
         } catch (Exception e) {
-            log.info("爬取数据异常："+keyword);
+            model.addAttribute("newItems",items);
+            model.addAttribute("ifNull","暂无商品信息");
+            log.info("爬取数据异常："+decode);
         }
-
-        return "OK!";
+//        if (items!=null) {
+//            items.forEach(System.out::println);
+//        }
+        return "user/addShop.html";
     }
 }

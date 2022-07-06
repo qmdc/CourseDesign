@@ -12,12 +12,13 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 public class HtmlParseUtil {
-    
+
     public static List<Item> parseJD(String keyword,String type) throws IOException {
-        System.out.println("进入这里");
+        System.out.println("进入这里"+keyword);
         ArrayList<Item> items = null;
         try {
             String url = "https://search.jd.com/Search?keyword="+keyword;
@@ -26,7 +27,7 @@ public class HtmlParseUtil {
             Element j_goodsList = document.getElementById("J_goodsList");
             assert j_goodsList != null;
             Elements lis = j_goodsList.getElementsByTag("li");
-            System.out.println("====="+lis);
+//            System.out.println("====="+lis);
 
             items = new ArrayList<>();
             for (Element li : lis) {
@@ -35,6 +36,7 @@ public class HtmlParseUtil {
                     String price = li.getElementsByClass("p-price").eq(0).text();
                     String title = li.getElementsByClass("p-name").eq(0).text();
                     Item item = new Item();
+                    item.setItemId(new Random().nextLong());
                     item.setItemImg(img);
                     item.setItemDes(title);
                     item.setItemType(type);

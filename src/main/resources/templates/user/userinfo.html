@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/bootstrap/css/bootstrap.css}" rel="stylesheet">
+    <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
+
+
+</head>
+<body>
+
+<div th:replace="common :: #upmenu"></div>
+
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">用户id</th>
+            <th scope="col">用户名</th>
+            <th scope="col">等级</th>
+            <th scope="col">积分</th>
+            <th scope="col">余额</th>
+            <th scope="col">消费额</th>
+            <th scope="col">订单数</th>
+            <th scope="col">性别</th>
+            <th scope="col">年龄</th>
+            <th scope="col">工作</th>
+            <th scope="col">电话</th>
+            <th scope="col">地址</th>
+            <th scope="col">注册日期</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user:${userList}">
+<!--&lt;!&ndash;            <td th:text="${#strings.abbreviate(user.itemDes,25)}"></td>&ndash;&gt;-->
+            <td th:text="${user.userId}"></td>
+            <td th:text="${user.userName}"></td>
+            <td th:text="${user.userGrade}"></td>
+            <td th:text="${user.userBranch}"></td>
+            <td th:text="'¥ '+${user.userMoney}"></td>
+            <td th:text="'¥ '+${user.userSpend}"></td>
+            <td th:text="${user.userCount}"></td>
+            <td>
+                <div th:switch="${user.userSex}">
+                    <span th:case="0">女</span>
+                    <span th:case="1">男</span>
+                </div>
+            </td>
+
+
+            <td th:text="${user.userAge}"></td>
+            <td th:text="${user.userWork}"></td>
+            <td th:text="${user.userPhone}"></td>
+            <td th:text="${#strings.abbreviate(user.userAddress,5)+#strings.substring(user.userAddress,user.userAddress.length-4,user.userAddress.length)}"
+                data-bs-toggle="popover" data-bs-trigger="hover" th:data-bs-content="${user.userAddress}"></td>
+
+            <td th:text="${user.createTime}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl)
+    })
+</script>
+
+</body>
+</html>

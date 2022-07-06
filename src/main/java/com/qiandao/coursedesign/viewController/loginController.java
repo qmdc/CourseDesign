@@ -6,6 +6,7 @@ import com.qiandao.coursedesign.pojo.User;
 import com.qiandao.coursedesign.service.ItemService;
 import com.qiandao.coursedesign.service.UserService;
 import com.qiandao.coursedesign.utils.MD5Util;
+import com.qiandao.coursedesign.utils.SimpleDate;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -63,7 +64,12 @@ public class loginController {
         //获取当前用户
         Subject subject = SecurityUtils.getSubject();
         //封装用户的登录信息
-        String password2 = MD5Util.MD5(password);
+        String password2 = null;
+        if (password!=null) {
+            password2 = MD5Util.MD5(password);
+        }else {
+            return "sign-in/signin.html";
+        }
         UsernamePasswordToken token = new UsernamePasswordToken(username, password2);
 
         try {
@@ -71,6 +77,7 @@ public class loginController {
             subject.login(token);   //登录请求
 
             log.info(username+"登录成功。。。。。");
+            System.out.println(SimpleDate.nowtime()+username+"登录成功。。。。。");
 
             QueryWrapper<User> wrapper = new QueryWrapper<>();
             wrapper.eq("userName",username);
@@ -91,7 +98,7 @@ public class loginController {
             }else {
                 return "user/center.html";
             }
-        } catch (UnknownAccountException | IncorrectCredentialsException e) {
+        } catch (Exception e) {
             model.addAttribute("msg", "用户名或密码错误");
             return "sign-in/signin.html";
         }

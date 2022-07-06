@@ -227,7 +227,7 @@
                     "core/item/searchbysql/"+encodeURI(encodeURI(keyword))+"/"+ge+"/"+le;
                 //这里传输中文要编码
                 axios.get(href).then(response=>{
-                    console.log(response.data);
+                    // console.log(response.data);
                     this.results=response.data;
                     this.ge="";
                     this.le="";
