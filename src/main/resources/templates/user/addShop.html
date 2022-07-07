@@ -8,12 +8,6 @@
     <script th:src="@{/bootstrap/js/bootstrap.bundle.js}"></script>
 
     <style>
-        /*#center{*/
-        /*    display: flex;*/
-        /*    justify-content:center;*/
-        /*    !*align-items:center;*!*/
-        /*    height: 100vh;*/
-        /*}*/
         p{
             text-align: center;
             font-size: 30px;
@@ -28,9 +22,7 @@
             display: inline-block;
             border: 1.5px solid #687179;
             border-radius: 5px;
-
         }
-
 
     </style>
 </head>
@@ -41,7 +33,7 @@
 <p>购买商品</p>
 <div id="input1">
     <input id="addshop" class="form-control-plaintext" type="text" placeholder=" 请输入商品关键词" required>
-    <button th:onclick="addShop()" class="btn btn-secondary">点击进货</button>
+    <button th:onclick="addShop()" class="btn btn-secondary">全网聚合进货</button>
 </div>
 
 <div class="container mt-3">
@@ -49,6 +41,7 @@
         <h2>搜索🔍到的商品～～</h2>
     </div>
     <p>请选择上架商品</p>
+    <div id="load"></div>
     <table class="table table-hover">
         <thead>
         <tr>
@@ -112,16 +105,17 @@
     })
 
     function addShop(){
+        document.getElementById("load").classList.add("spinner-border");
         let keyword = document.getElementById("addshop").value;
-        if(keyword===null){
-            return;
+        if(keyword===null||keyword===''){
+            keyword='吾尔登湖'
         }
         location.href='/shop/parse/ABC/'+encodeURI(encodeURI(keyword))
     }
 
     function addShopOne(a,b,c) {
         $.ajax({
-            url:"http://localhost:9090/shop/addShopOne",
+            url:"/shop/addShopOne",
             data:{
                 "itemDes":a,
                 "itemprice":b,
