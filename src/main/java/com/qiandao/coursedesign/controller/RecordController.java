@@ -1,5 +1,6 @@
 package com.qiandao.coursedesign.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.qiandao.coursedesign.pojo.Item;
 import com.qiandao.coursedesign.pojo.Record;
@@ -131,11 +132,12 @@ public class RecordController {
         return "forward:/shop/recording";
     }
 
-    @ApiOperation("导出商品销售记录表")
+    @ApiOperation("导出当前用户商品销售记录表")
     @RequestMapping("/shop/export")
     @ResponseBody
     public String export() {
-        List<Record> records = recordService.getBaseMapper().selectList(null);
+        User loginsuccess = (User) SecurityUtils.getSubject().getSession().getAttribute("loginsuccess");
+        List<Record> records = recordService.getBaseMapper().selectList(new QueryWrapper<Record>().eq("userId",loginsuccess.getUserId()));
 
         String path = "/Users/ppsn/Desktop/";
         Workbook workbook = new XSSFWorkbook();

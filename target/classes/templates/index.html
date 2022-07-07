@@ -243,26 +243,6 @@
             this.searchKey();   //默认触发的函数
         },
 
-        created() {
-            window.addEventListener('scroll', this.Scrollbottom);  //页面加载时监听滚动事件
-        },
-
-        destroyed() {
-            window.removeEventListener('scroll', this.Scrollbottom) //页面离开后销毁监听事件
-        },
-
-        Scrollbottom() {
-            let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            let clientHeight = document.documentElement.clientHeight;
-            let scrollHeight = document.documentElement.scrollHeight;
-            if (scrollTop + clientHeight >= scrollHeight) {
-                console.log("滚动到底部了")
-                // this.pageNo++
-                console.log(this.pageNo);
-                // this.fetchData()
-
-            }
-        }
 
     });
 
